@@ -24,6 +24,15 @@ export default function Layout() {
     setLikedItems((prevLikedItems) => [...prevLikedItems, item]);
   };
 
+  const removeItemFromLiked = (item) => {
+    let likedItemsDuplicate = [...likedItems]
+    if(likedItemsDuplicate.includes(item)) {
+      const index = likedItemsDuplicate.indexOf(item);
+      likedItemsDuplicate.splice(index, 1); 
+      setLikedItems(likedItemsDuplicate)
+    }
+  }
+
   useEffect(() => {
     Promise.all(fetchRequests)
       .then((responses) => {
@@ -37,6 +46,8 @@ export default function Layout() {
         console.error("Error:", error);
       });
   }, []);
+
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
@@ -45,12 +56,14 @@ export default function Layout() {
           context={{
             products,
             categories,
+            likedItems, 
             addItemToCart,
             addItemToLiked,
+            removeItemFromLiked
           }}
         />
       ) : (
-        <h1 className="flex-grow flex justify-center p-3 font-[650] text-[20px] border-2 border-black">Loading...</h1>
+        <h1 className="flex-grow flex justify-center p-3 font-[650] text-[18px] border-2 border-black">Loading...</h1>
       )}
       <Footer />
     </div>

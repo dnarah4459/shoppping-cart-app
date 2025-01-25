@@ -7,8 +7,7 @@ import { useCallback } from "react";
 import { useState } from "react";
 
 export default function Shop() {
-  const { products, categories, addItemToCart, addItemToLiked } =
-    useOutletContext();
+  const { products, categories, addItemToCart, addItemToLiked, likedItems, removeItemFromLiked } = useOutletContext();
   let [productsListDOM, setProductsListDOM] = useState(products);
 
   const handleSelection = useCallback((userSelection) => {
@@ -57,8 +56,7 @@ export default function Shop() {
           Women's Clothing
         </button>
       </div>
-      <div
-        className="flex-grow border-2 border-l-0 border-r-0 border-b-0
+      <div className="flex-grow border-2 border-l-0 border-r-0 border-b-0
                       grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
                       gap-4 p-4 overflow-auto"
       >
@@ -66,9 +64,11 @@ export default function Shop() {
           return (
             <ProductCard
               key={product.id}
-              imgURL={product.image}
-              title={product.title}
-              price={product.price}
+              product={product}
+              addItemToLiked={addItemToLiked}
+              likedItems={likedItems}
+              removeItemFromLiked={removeItemFromLiked}
+              addItemToCart = {addItemToCart}
             />
           );
         })}
