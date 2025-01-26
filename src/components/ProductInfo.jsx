@@ -5,7 +5,7 @@ import heartFilled from "../assets/heart_filled.svg";
 import { useState } from "react";
 
 // eslint-disable-next-line react/prop-types
-export default function ProductInfo({ product, addItemToLiked, likedItems, removeItemFromLiked, addItemToCart}) { 
+export default function ProductInfo({ product, addItemToLiked, likedItems, removeItemFromLiked, addItemToCart, setShowProductInfo}) { 
    let [count, setCount] = useState(1); 
 
   const handleItemSelectionLiked = () => {
@@ -16,9 +16,24 @@ export default function ProductInfo({ product, addItemToLiked, likedItems, remov
     }
   }
 
+  const handleMinusButton = () => {
+    if(count == 1) {
+        return;
+    } else {
+        setCount(count - 1)
+    }
+  }
+
+
+  const handleItemToCart = () => {
+    for(let i = 0; i < count; i++) {
+        addItemToCart(product);
+    }
+    setShowProductInfo(false);
+  }
+
   return (
-    <div className="flex flex-col bg-white rounded-lg shadow-md p-4 gap-3">
-      <div className="relative w-full h-48 flex items-center justify-center">
+    <div className="flex flex-col bg-white rounded-lg shadow-md p-4 gap-3 relative max-w-[90vw]">      <div className="relative w-full h-48 flex items-center justify-center">
         <img
           src={product.image}
           alt={product.title}
@@ -34,13 +49,28 @@ export default function ProductInfo({ product, addItemToLiked, likedItems, remov
       </div>
 
       <div className="flex flex-col text-center">
+      <span className="text-gray-500 mt-1">${product.price}</span>
         <h1 className="font-semibold text-lg truncate">
           {product.title}
         </h1>
-        <span className="text-gray-500 mt-1">${product.price}</span>
       </div>
 
-      <button className="mt-auto p-2 bg-purple-600 text-white font-semibold rounded hover:bg-purple-700 transition-colors cursor-pointer" onClick={() => {addItemToCart(product)}}>
+      <div>
+        {product.description}
+      </div>
+
+        <div className="flex border-2 items-center self-start">
+            <button className="bg-purple-500 text-[20px] font-[650] px-3 cursor-pointer text-white" onClick={handleMinusButton}>
+                -
+            </button>
+            <div className="px-4">
+                {count}
+            </div>
+            <button className="bg-purple-500 text-[20px] font-[650] px-3 cursor-pointer text-white" onClick={() => {setCount(count + 1)}}>
+                +
+            </button>
+        </div>
+      <button className="mt-auto p-2 bg-purple-600 text-white font-semibold rounded hover:bg-purple-700 transition-colors cursor-pointer self-start" onClick={handleItemToCart}>
         Add to Cart
       </button>
     </div>

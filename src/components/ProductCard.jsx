@@ -2,8 +2,8 @@
 /* eslint-disable no-unused-vars */
 import heartEmpty from "../assets/heart_empty.svg";
 import heartFilled from "../assets/heart_filled.svg";
-import ProductInfo from "./ProductInfo";
 import { useState } from "react";
+import ProductInfo from "./ProductInfo";
 // eslint-disable-next-line react/prop-types
 export default function ProductCard({ product, addItemToLiked, likedItems, removeItemFromLiked, addItemToCart}) { 
   let [showProductInfo, setShowProductInfo] = useState(false); 
@@ -35,11 +35,35 @@ export default function ProductCard({ product, addItemToLiked, likedItems, remov
             )}
         </button>
       </div>
-
-
+           
       {showProductInfo && (
-        <ProductInfo product = {product} addItemToLiked ={addItemToLiked} likedItems = {likedItems} removeItemFromLiked = {removeItemFromLiked} addItemToCart = {addItemToCart}/>
-      )}
+  <div 
+    className="
+      fixed 
+      inset-0 
+      z-50
+      flex 
+      items-center 
+      justify-center 
+      bg-black/30 
+      backdrop-blur-sm
+    "
+    onClick={() => setShowProductInfo(false)}
+  >
+    <div onClick={(e) => e.stopPropagation()}>
+      <ProductInfo
+        product={product}
+        addItemToLiked={addItemToLiked}
+        likedItems={likedItems}
+        removeItemFromLiked={removeItemFromLiked}
+        addItemToCart={addItemToCart}
+        setShowProductInfo={setShowProductInfo}
+      />
+    </div>
+  </div>
+)}
+
+
 
       <div className="flex flex-col text-center">
         <h1 className="font-semibold text-lg truncate">

@@ -33,6 +33,32 @@ export default function Layout() {
     }
   }
 
+  const removeItemFromCart = (item) => {
+    setCartItems((prevCartItems) => {
+      // Find the index of the first instance of the item
+      const itemIndex = prevCartItems.findIndex(cartItem => cartItem.id === item.id);
+      
+      if (itemIndex !== -1) {
+        // If the item exists, create a new array without that specific item
+        const updatedItems = [...prevCartItems];
+        updatedItems.splice(itemIndex, 1);  // Removes only the first occurrence of the item
+        return updatedItems;
+      }
+  
+      return prevCartItems;
+    });
+  };
+  
+
+  const removeItemFromCartCompletely = (product) => {
+  setCartItems(prevCartItems => 
+    prevCartItems.filter(cartItem => cartItem.id !== product.id)
+  );
+};
+  
+
+  const numItemsInCart = cartItems.length; 
+
   useEffect(() => {
     Promise.all(fetchRequests)
       .then((responses) => {
@@ -50,16 +76,19 @@ export default function Layout() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
+      <Header numItemsInCart={numItemsInCart}/>
       {products.length > 0 ? (
         <Outlet
           context={{
             products,
             categories,
             likedItems, 
+            cartItems,
             addItemToCart,
             addItemToLiked,
-            removeItemFromLiked
+            removeItemFromLiked, 
+            removeItemFromCart,
+            removeItemFromCartCompletely
           }}
         />
       ) : (
